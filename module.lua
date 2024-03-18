@@ -35,8 +35,15 @@ ffi_metatype(renderadapterinfo_t, {
 })
 
 local get_adapter_info = function(adapter)
-    local info, adapter = renderadapterinfo_t()
+    local info = renderadapterinfo_t()
     native_GetAdapterInfo(adapter, info)
 
     return info
+end
+
+do
+    local adapter = native_GetCurrentAdapter()
+    local info = get_adapter_info(adapter)
+
+    print(info.driver_name)
 end
