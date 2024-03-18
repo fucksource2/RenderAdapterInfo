@@ -31,7 +31,12 @@ local fallback = {
 }
 
 ffi_metatype(renderadapterinfo_t, {
-    __index = function(index) return fallback[index](self) or nil end
+    __index = function(index)
+        local ret = fallback[index]
+        if ret == nil then return nil end
+    
+        return ret(self)
+    end
 })
 
 local get_adapter_info = function(adapter)
