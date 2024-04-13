@@ -1,5 +1,5 @@
 -- Cache frequently used _G[*] functions for performance
-local require, error, vtable_bind, tostring = require, error, vtable_bind, tostring
+local require, vtable_bind, tostring = require, vtable_bind, tostring
 
 -- Dependencies
 local ffi = require "ffi"
@@ -31,11 +31,9 @@ local fallback = {
 }
 
 ffi_metatype(renderadapterinfo_t, {
-    __index = function(index)
+    __index = function(self, index)
         local ret = fallback[index]
-        if ret == nil then return nil end
-    
-        return ret(self)
+        if ret then return ret(self) end
     end
 })
 
@@ -50,5 +48,5 @@ do
     local adapter = native_GetCurrentAdapter()
     local info = get_adapter_info(adapter)
 
-    print(info.driver_name)
+    print(info.device_id * info.vendor_id)
 end
